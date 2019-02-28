@@ -25,29 +25,28 @@ namespace csjo
                         { "Author", "orange634nty" },
                         { "Repo", "https://github.com/orange634nty/csjo" },
                         { "Version", "1.0.0" }
-                }, Formatting.Indented));
+                }, pretty ? Formatting.Indented : Formatting.None));
                 return;
             }
 
             // check if array and object both are not set
             if (arr != "" && obj != "")
             {
-                this.Context.Logger.LogInformation("you can't set both array and object.");
-                return;
+                throw new CsJoException("you can't set both array and object.");
             }
 
             // print json
             if (arr != "")
             {
-                this.Context.Logger.LogInformation(this.ConvertArray(arr, pretty));
+                this.Context.Logger.LogInformation(this.PrintArray(arr, pretty));
             }
             else if (obj != "")
             {
-                this.Context.Logger.LogInformation(this.ConvertToDict(obj, pretty));
+                this.Context.Logger.LogInformation(this.PrintObj(obj, pretty));
             }
         }
 
-        private string ConvertArray(string arr, bool pretty)
+        private string PrintArray(string arr, bool pretty)
         {
             return JsonConvert.SerializeObject(
                 arr.Split(" ").Select(a => this.ConvertValue(a)),
@@ -55,7 +54,7 @@ namespace csjo
             );
         }
 
-        private string ConvertToDict(string obj, bool pretty)
+        private string PrintObj(string obj, bool pretty)
         {
             var res = new Dictionary<string, object>();
             foreach (string el in obj.Split(" "))
@@ -87,7 +86,7 @@ namespace csjo
                 return JsonConvert.DeserializeObject(value);
             }
 
-            // try to parse to int
+            // try to parse string to int
             try
             {
                 return Int32.Parse(value);
@@ -101,6 +100,11 @@ namespace csjo
                 throw e;
             }
         }
+    }
+
+    public class CsJoException : Exception
+    {
+        public CsJoException(string message) : base(message) { }
     }
 
     class Program
