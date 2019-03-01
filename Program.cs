@@ -66,7 +66,7 @@ namespace csjo
                 }
                 else
                 {
-                    this.Context.Logger.LogInformation($"wrong format : {el}");
+                    throw new CsJoException($"wrong format : {el}");
                 }
             }
             return JsonConvert.SerializeObject(res, pretty ? Formatting.Indented : Formatting.None);
