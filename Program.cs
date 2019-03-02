@@ -11,7 +11,7 @@ namespace csjo
 {
     public class CsJo : BatchBase
     {
-        public void Entry(
+        public void Convert(
             [Option("a", "json object.")]string arr = "",
             [Option("o", "json object.")]string obj = "",
             [Option("p", "pretty print json.")]bool pretty = false,
@@ -38,15 +38,15 @@ namespace csjo
             // print json
             if (arr != "")
             {
-                this.Context.Logger.LogInformation(this.PrintArray(arr, pretty));
+                this.Context.Logger.LogInformation(this.ConvertArrayToJson(arr, pretty));
             }
             else if (obj != "")
             {
-                this.Context.Logger.LogInformation(this.PrintObj(obj, pretty));
+                this.Context.Logger.LogInformation(this.ConvertObjToJson(obj, pretty));
             }
         }
 
-        private string PrintArray(string arr, bool pretty)
+        private string ConvertArrayToJson(string arr, bool pretty)
         {
             return JsonConvert.SerializeObject(
                 arr.Split(" ").Select(a => this.ConvertValue(a)),
@@ -54,7 +54,7 @@ namespace csjo
             );
         }
 
-        private string PrintObj(string obj, bool pretty)
+        private string ConvertObjToJson(string obj, bool pretty)
         {
             var res = new Dictionary<string, object>();
             foreach (string el in obj.Split(" "))
