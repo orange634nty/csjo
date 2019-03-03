@@ -12,8 +12,8 @@ namespace csjo
     public class CsJo : BatchBase
     {
         public void Convert(
-            [Option("a", "json object.")]string arr = "",
-            [Option("o", "json object.")]string obj = "",
+            [Option("a", "array.")]string arr = "",
+            [Option("o", "object.")]string obj = "",
             [Option("p", "pretty print json.")]bool pretty = false,
             [Option("v", "show version.")]bool version = false)
         {
