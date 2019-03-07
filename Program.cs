@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Reflection;
 using Newtonsoft.Json;
 
 namespace csjo
@@ -14,21 +15,8 @@ namespace csjo
         public void Convert(
             [Option("a", "array.")]string arr = "",
             [Option("o", "object.")]string obj = "",
-            [Option("p", "pretty print json.")]bool pretty = false,
-            [Option("v", "show version.")]bool version = false)
+            [Option("p", "pretty print json.")]bool pretty = false)
         {
-            if (version)
-            {
-                this.Context.Logger.LogInformation(JsonConvert.SerializeObject(new Dictionary<string, object>() {
-                        { "Program", "csjo" },
-                        { "Description", "This is inspired by jpmens/jo and skanehira/gjo" },
-                        { "Author", "orange634nty" },
-                        { "Repo", "https://github.com/orange634nty/csjo" },
-                        { "Version", "1.0.0" }
-                }, pretty ? Formatting.Indented : Formatting.None));
-                return;
-            }
-
             // check if array and object both are not set
             if (arr != "" && obj != "")
             {
@@ -44,6 +32,20 @@ namespace csjo
             {
                 this.Context.Logger.LogInformation(this.ConvertObjToJson(obj, pretty));
             }
+        }
+
+        [Command("version")]
+        public void ShowVersion(
+            [Option("p", "pretty print json.")]bool pretty = false
+        )
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(new Dictionary<string, object>() {
+                    { "Program", "csjo" },
+                    { "Description", "This is inspired by jpmens/jo and skanehira/gjo" },
+                    { "Author", "orange634nty" },
+                    { "Repo", "https://github.com/orange634nty/csjo" },
+                    { "Version", "1.0.0" }
+            }, pretty ? Formatting.Indented : Formatting.None));
         }
 
         private string ConvertArrayToJson(string arr, bool pretty)
