@@ -13,31 +13,22 @@ namespace csjo
     public class CsJo : BatchBase
     {
         public void Convert(
-            [Option("a", "array.")]string arr = "",
-            [Option("o", "object.")]string obj = "",
+            [Option(0)]string input,
+            [Option("a", "is array.")]bool isArray = false,
             [Option("p", "pretty print json.")]bool pretty = false)
         {
-            // check if array and object both are not set
-            if (arr != "" && obj != "")
+            if (isArray)
             {
-                throw new CsJoException("you can't set both array and object.");
+                Console.WriteLine(this.ConvertArrayToJson(input, pretty));
             }
-
-            // print json
-            if (arr != "")
+            else
             {
-                this.Context.Logger.LogInformation(this.ConvertArrayToJson(arr, pretty));
-            }
-            else if (obj != "")
-            {
-                this.Context.Logger.LogInformation(this.ConvertObjToJson(obj, pretty));
+                Console.WriteLine(this.ConvertObjToJson(input, pretty));
             }
         }
 
         [Command("version")]
-        public void ShowVersion(
-            [Option("p", "pretty print json.")]bool pretty = false
-        )
+        public void ShowVersion([Option("p", "pretty print json.")]bool pretty = false)
         {
             Console.WriteLine(JsonConvert.SerializeObject(new Dictionary<string, object>() {
                     { "Program", "csjo" },
