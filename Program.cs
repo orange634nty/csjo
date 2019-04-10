@@ -35,7 +35,7 @@ namespace csjo
                     { "Description", "This is inspired by jpmens/jo and skanehira/gjo" },
                     { "Author", "orange634nty" },
                     { "Repo", "https://github.com/orange634nty/csjo" },
-                    { "Version", "1.0.0" }
+                    { "Version", "1.0.1" }
             }, pretty ? Formatting.Indented : Formatting.None));
         }
 
